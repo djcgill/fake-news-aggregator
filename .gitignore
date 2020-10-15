@@ -129,7 +129,6 @@ dmypy.json
 .pyre/
 
 # Django settings
-settings.py
 media/**
 !media/**/init.txt
 local_settings.py
