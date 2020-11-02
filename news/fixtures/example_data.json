@@ -1,0 +1,21 @@
+[
+    {
+        "model": "news.Article",
+        "fields": {
+            "id": 1,
+            "title": "Covid: Spain imposes national night-time curfew to curb infections",
+            "url": "https://www.bbc.co.uk/news/world-europe-54682222",
+            "score": 100
+        }   
+    },
+    {
+        "model": "news.Article",
+        "fields": {
+            "id": 2,
+            "title": "Deroy Murdock: Trump’s 4 Nobel Peace Prize nominations show he’s a peacemaker — not warmonger as critics claim",
+            "url": "https://www.foxnews.com/opinion/trump-nobel-prize-deroy-murdock",
+            "score": 10
+        }
+    }
+
+]
