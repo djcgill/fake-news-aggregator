@@ -6,10 +6,11 @@ from feedparser import parse
 
 from news.models import Article, NewsFeed
 
-class command(BaseCommand):
+class Command(BaseCommand):
     help = "Add new RSS feed"
     logger = logging.getLogger(__name__)
 
+    # TODO: Allow a RSS feeds to be added via a file
     def add_arguments(self, parser):
         parser.add_argument('url', nargs='+', type=str)
         parser.add_argument(
@@ -19,7 +20,8 @@ class command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        feed_name = options['name'] if 'name' in options else None
-        feed = NewsFeed(url=options['url'], title=feed_name)
-        feed.save()
+        if 'url' in options:
+            for url in options['url']:
+                feed = NewsFeed(url=url)
+                feed.save()
         

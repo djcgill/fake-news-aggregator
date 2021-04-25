@@ -4,7 +4,8 @@ from django.http import HttpResponse
 from news.models import Article
 
 def index(request):
-    articles = Article.objects.all()[::-1]
+    # TODO: Latest by individual sources
+    articles = Article.objects.order_by('last_updated_date')[:10]
     context = {
         "article_list": articles,
     }

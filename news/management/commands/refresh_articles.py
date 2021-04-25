@@ -6,7 +6,7 @@ from feedparser import parse
 
 from news.models import Article, NewsFeed
 
-class command(BaseCommand):
+class Command(BaseCommand):
     help = "Refreshes articles from all available feeds"
     logger = logging.getLogger(__name__)
 
@@ -15,9 +15,8 @@ class command(BaseCommand):
         if 'feed_name' in options:
             raise NotImplementedError("Cannot specify feed name yet")
         else:
-            feeds = NewsFeed.objects.values_list('url', flat=True)
+            feeds = NewsFeed.objects.all()
 
-            for feed_url in feeds:
-                self.logger.debug("Getting feed from: %s", feed_url)
-                feed = parse(feed_url)
-                feed.get_articles(feed_url)
+            for feed in feeds:
+                self.logger.debug("Getting feed from: %s", feed.url)
+                feed.get_articles()
