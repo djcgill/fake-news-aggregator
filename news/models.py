@@ -3,11 +3,13 @@ import os
 from django.db import models
 
 from django.utils import timezone
+from django.template.defaultfilters import slugify
 
 from datetime import datetime
 from time import mktime
 from urllib.parse import urlparse
 from feedparser import parse
+
 
 class NewsFeed(models.Model):
     name = models.CharField(max_length=200)
@@ -43,17 +45,20 @@ class NewsFeed(models.Model):
                 article = Article()
                 article.title = entry.title
                 article.url = entry.link
+                article.description = entry.description
                 article.publictaion_date = datetime.fromtimestamp(mktime(entry.published_parsed))
                 article.last_updated_date = datetime.fromtimestamp(mktime(entry.updated_parsed))
 
                 try:
                     article.category = entry.categories
                 except AttributeError:
-                    article.category = None
+                    #article.category = None
+                    pass
 
                 article.source = self # This is bad use something else
                 #TODO: add article score when HAProxy is implemented
                 #TODO: add images
+
 
                 article.save()
 
@@ -74,6 +79,7 @@ class Article(models.Model):
     last_updated_date = models.DateTimeField(default=datetime.now)
     source = models.ForeignKey(NewsFeed, on_delete=models.PROTECT)
     category = models.CharField(max_length=200, default='undefined')
+    description = models.TextField()
 
     def __str__(self):
         return self.title

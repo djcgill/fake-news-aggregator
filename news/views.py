@@ -5,7 +5,7 @@ from news.models import Article
 
 def index(request):
     # TODO: Latest by individual sources
-    articles = Article.objects.order_by('last_updated_date')[:10]
+    articles = Article.objects.order_by('-last_updated_date')[:10]
     context = {
         "article_list": articles,
     }
