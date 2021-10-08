@@ -12,6 +12,7 @@ from feedparser import parse
 
 
 class NewsFeed(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     url = models.URLField(unique=True)
     #default_image = models.ImageField(upload_to='imagepath', blank=True, null=True) # TODO
