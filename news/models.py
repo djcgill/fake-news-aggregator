@@ -10,6 +10,8 @@ from time import mktime
 from urllib.parse import urlparse
 from feedparser import parse
 
+from scanners.models import Scanner
+
 
 class NewsFeed(models.Model):
     id = models.AutoField(primary_key=True)
@@ -75,7 +77,7 @@ class Article(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
     url = models.URLField()
-    score = models.IntegerField(default=50)
+    scores = models.IntegerField(default=50)
     publication_date = models.DateTimeField(default=datetime.now)
     last_updated_date = models.DateTimeField(default=datetime.now)
     source = models.ForeignKey(NewsFeed, on_delete=models.PROTECT)
@@ -84,3 +86,14 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        results = {}
+        for scanner in Scanner.objects.all():
+            score = scanner.get_score(self.source, self.description)
+            results.update({scanner.name: score})
+
+        #TODO: pickle?
+        self.scores = results
+
+        super(Article, self).save(*args, **kwargs)
