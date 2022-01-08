@@ -1,4 +1,5 @@
 django
+django-picklefield
 psycopg2
 gunicorn
 python-decouple
